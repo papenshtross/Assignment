@@ -1,5 +1,7 @@
+"""Defining application models"""
 from django.db import models
 
+"""My profile model"""
 class Profile(models.Model):       
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)

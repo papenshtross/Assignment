@@ -8,10 +8,12 @@ Replace these with more appropriate tests for your application.
 from django.test import TestCase
 from main.models import Profile
 
+"""Main unit tests class"""
 class MainTest(TestCase):
     fixtures = ['initial_data.yaml']
 
     def test_index(self):
+        """Test case for index page"""
         response = self.client.get('')
 
         # Check that the response is 200 OK
