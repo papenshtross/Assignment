@@ -117,3 +117,4 @@ LOGGING = {
         },
     }
 }
+STATIC_DOC_ROOT = '/web'

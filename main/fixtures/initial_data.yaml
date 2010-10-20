@@ -1,0 +1,19 @@
+- model: main.profile
+  pk: 1
+  fields:
+      first_name: "Roman"
+      last_name: "Shportko"
+      skype: "roman.shportko"
+      icq: "360433962"
+      email: "romanshp@gmail.com"
+      bio: "Educational Summary:\v
+            Bachelors degree in Computer Science ,  Department  of Artificial Intelligence , Kharkov National University of Radioelectronics (2005-2009)\v
+            Masters degree in Computer Science, Department  of Artificial Intelligence,  Kharkov National University of Radioelectronics (2009-2010)\v
+            Experience:\v
+            Java Programmer 10/2008 - 7/2010 NixSolutions Ltd, Kharkov\v
+            J2EE development 10/2008 - 12/2009:\v
+            Handled the tasks of updating, repairing, modifying and expanding web oriented system, bug fixing, unit testing\v
+            BlackBerry/Android development 1/2010 - 7/2010:\v
+            Have taken leadership roles in various mobile application projects. Distribution of the tasks between team members
+            , code reviews, project architecture design, graphics design"
+      cell: "+46736375633"
