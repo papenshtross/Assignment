@@ -6,7 +6,7 @@ Replace these with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from main.models import Profile
+from main.models import Profile, Request
 
 """Main unit tests class"""
 class MainTest(TestCase):
@@ -34,3 +34,8 @@ class MainTest(TestCase):
         self.failUnlessEqual(profile.icq, response_profile.icq)
         self.failUnlessEqual(profile.email, response_profile.email)
         self.failUnlessEqual(profile.skype, response_profile.skype)
+
+    def test_request_hook_middleware(self):
+        """Test case for request hook middleware"""
+        self.client.get('')
+        self.assertTrue(Request.objects.all().count() > 0)
