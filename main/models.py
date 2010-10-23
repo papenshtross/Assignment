@@ -10,3 +10,7 @@ class Profile(models.Model):
     icq = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
     cell = models.CharField(max_length=30)
+
+"""Http Request model"""
+class Request(models.Model):
+    request = models.TextField()
