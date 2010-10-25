@@ -119,3 +119,5 @@ LOGGING = {
     }
 }
 STATIC_DOC_ROOT = '/web'
+TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth',
+                               'main.context_processors.django_settings',)
