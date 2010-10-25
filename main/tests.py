@@ -7,6 +7,7 @@ Replace these with more appropriate tests for your application.
 
 from django.test import TestCase
 from main.models import Profile, Request
+import settings
 
 """Main unit tests class"""
 class MainTest(TestCase):
@@ -39,3 +40,9 @@ class MainTest(TestCase):
         """Test case for request hook middleware"""
         self.client.get('')
         self.assertTrue(Request.objects.all().count() > 0)
+
+    def test_django_settings_context_template_processor(self):
+        """Test case for django settings context template processor"""
+        response = self.client.get('')
+        context_settings = response.context['settings']
+        self.assertIsNotNone(context_settings)
