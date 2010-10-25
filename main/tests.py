@@ -7,7 +7,6 @@ Replace these with more appropriate tests for your application.
 
 from django.test import TestCase
 from main.models import Profile, Request
-import settings
 
 """Main unit tests class"""
 class MainTest(TestCase):
