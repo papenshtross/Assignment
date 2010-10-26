@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from main.views import index
+from main.views import edit_profile
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -16,5 +17,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    ('^$', index),
+    (r'^$', index),
+    (r'^profile_edit/(\d+)/$', edit_profile),
 )
