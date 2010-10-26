@@ -4,13 +4,13 @@ unittest). These will both pass when you run "manage.py test".
 
 Replace these with more appropriate tests for your application.
 """
-
-from django.test import TestCase
 from main.models import Profile, Request
+from django_webtest import WebTest
 
 """Main unit tests class"""
-class MainTest(TestCase):
+class MainTest(WebTest):
     fixtures = ['initial_data.yaml']
+    profile_pk = 1
 
     def test_index(self):
         """Test case for index page"""
@@ -21,7 +21,7 @@ class MainTest(TestCase):
         # Check that index.html template is using
         self.assertTemplateUsed(response, 'index.html', msg_prefix='')
         # Assign profile objects from test db and acquired from response
-        profile = Profile.objects.get(pk=1)
+        profile = Profile.objects.get(pk=self.profile_pk)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
         self.assertContains(response, profile.first_name, count=1
@@ -45,3 +45,27 @@ class MainTest(TestCase):
         response = self.client.get('')
         context_settings = response.context['settings']
         self.assertIsNotNone(context_settings)
+
+    def test_edit_profile(self):
+        """Test case for edit profile"""
+        response = self.client.get('/profile_edit/' + str(self.profile_pk) + '/')
+        response_form = response.context['form']
+        self.assertIsNotNone(response_form)
+        # Assign profile objects from test db
+        profile = Profile.objects.get(pk=self.profile_pk)
+        # Check that response contains first_name filed value
+        self.assertContains(response, profile.first_name, count=1
+                            , status_code=200, msg_prefix='')
+
+    def test_edit_profile_webtest(self):
+        """Test edit profile functionality using django_webtest"""
+        form = self.app.get('/profile_edit/' + str(self.profile_pk) + '/').form
+        test_name = 'test_name'
+        form['first_name'] = test_name
+        #Submit form and get following response
+        response = form.submit().follow() # all form fields are submitted
+        #Check that response contains changed name
+        self.failUnlessEqual(test_name, response.context['profile'].first_name)
+        #Check that DB is updated
+        profile = Profile.objects.get(pk=self.profile_pk)
+        self.failUnlessEqual(test_name, profile.first_name)
