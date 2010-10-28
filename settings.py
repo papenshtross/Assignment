@@ -12,8 +12,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'assignment',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'dev.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -74,14 +74,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'middleware.RequestsHook',
+    'main.middleware.RequestHook',
 )
 
 ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), 'web/templates').replace('\\','/'),
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -118,4 +114,3 @@ LOGGING = {
         },
     }
 }
-STATIC_DOC_ROOT = '/web'

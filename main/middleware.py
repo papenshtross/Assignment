@@ -1,10 +1,9 @@
+"""File where middleware defenitions are situated"""
 from main.models import Request
 
-__author__ = 'Romchig'
 
-"""Middleware for http requests hooking"""
-class RequestsHook:
-
+class RequestHook:
+    """Hooks each request"""
     def process_request(self, request):
         """Put each request to db"""
         Request.objects.create(request=request)

@@ -8,8 +8,9 @@ Replace these with more appropriate tests for your application.
 from django.test import TestCase
 from main.models import Profile, Request
 
-"""Main unit tests class"""
+
 class MainTest(TestCase):
+    """Main unit tests class"""
     fixtures = ['initial_data.yaml']
 
     def test_index(self):
@@ -24,8 +25,8 @@ class MainTest(TestCase):
         profile = Profile.objects.get(pk=1)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1
-                            , status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1,
+                            status_code=200, msg_prefix='')
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
