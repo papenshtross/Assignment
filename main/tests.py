@@ -9,8 +9,9 @@ from django.test import TestCase
 from main.models import Profile, Request
 import settings
 
-"""Main unit tests class"""
+
 class MainTest(TestCase):
+    """Main unit tests class"""
     fixtures = ['initial_data.yaml']
 
     def test_index(self):
@@ -25,8 +26,8 @@ class MainTest(TestCase):
         profile = Profile.objects.get(pk=1)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1
-                            , status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1,
+                            status_code=200, msg_prefix='')
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
@@ -41,7 +42,7 @@ class MainTest(TestCase):
         self.client.get('')
         self.assertTrue(Request.objects.all().count() > 0)
 
-    def test_django_settings_context_template_processor(self):
+    def test_django_template_processor(self):
         """Test case for django settings context template processor"""
         response = self.client.get('')
         context_settings = response.context['settings']
