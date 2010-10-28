@@ -1,6 +1,10 @@
+"""File where form defenitions are situated"""
 from django.forms import ModelForm
-from models import Profile
+from main.models import Profile
+
 
 class ProfileForm(ModelForm):
+    """Represent form for Profile model"""
     class Meta:
+        """Model assigning"""
         model = Profile

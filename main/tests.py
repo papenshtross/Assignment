@@ -7,8 +7,9 @@ Replace these with more appropriate tests for your application.
 from main.models import Profile, Request
 from django_webtest import WebTest
 
-"""Main unit tests class"""
+
 class MainTest(WebTest):
+    """Main unit tests class"""
     fixtures = ['initial_data.yaml']
     profile_pk = 1
 
@@ -24,8 +25,8 @@ class MainTest(WebTest):
         profile = Profile.objects.get(pk=self.profile_pk)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1
-                            , status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1,
+                            status_code=200, msg_prefix='')
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
@@ -40,7 +41,7 @@ class MainTest(WebTest):
         self.client.get('')
         self.assertTrue(Request.objects.all().count() > 0)
 
-    def test_django_settings_context_template_processor(self):
+    def test_django_template_processor(self):
         """Test case for django settings context template processor"""
         response = self.client.get('')
         context_settings = response.context['settings']
@@ -48,14 +49,15 @@ class MainTest(WebTest):
 
     def test_edit_profile(self):
         """Test case for edit profile"""
-        response = self.client.get('/profile_edit/' + str(self.profile_pk) + '/')
+        response = self.client.get('/profile_edit/' +
+                                   str(self.profile_pk) + '/')
         response_form = response.context['form']
         self.assertIsNotNone(response_form)
         # Assign profile objects from test db
         profile = Profile.objects.get(pk=self.profile_pk)
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1
-                            , status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1,
+                            status_code=200, msg_prefix='')
 
     def test_edit_profile_webtest(self):
         """Test edit profile functionality using django_webtest"""
@@ -63,7 +65,7 @@ class MainTest(WebTest):
         test_name = 'test_name'
         form['first_name'] = test_name
         #Submit form and get following response
-        response = form.submit().follow() # all form fields are submitted
+        response = form.submit().follow()  # all form fields are submitted
         #Check that response contains changed name
         self.failUnlessEqual(test_name, response.context['profile'].first_name)
         #Check that DB is updated
