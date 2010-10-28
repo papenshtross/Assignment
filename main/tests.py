@@ -8,8 +8,9 @@ Replace these with more appropriate tests for your application.
 from django.test import TestCase
 from main.models import Profile
 
-"""Main unit tests class"""
+
 class MainTest(TestCase):
+    """Main unit tests class"""
     fixtures = ['initial_data.yaml']
 
     def test_index(self):
