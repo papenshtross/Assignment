@@ -1,0 +1,29 @@
+<html>
+<title>My personal page</title>
+<head>
+    <style>
+        body {
+        text-align: center;
+        }
+        div {
+          width:50%;
+          margin-left:auto;
+          margin-right:auto;
+          text-align:left;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{profile.first_name}} {{profile.last_name}}</h1>
+    <p>About me:</p>
+    <div>
+        <p>{{profile.bio}}</p>
+    </div>
+    <p>Contacts:</p>
+    <p>E-mail: <a href="mailto:{{profile.email}}">{{profile.email}}</a></p>
+    <p>Skype: {{profile.skype}}</p>
+    <p>ICQ: {{profile.icq}}</p>
+    <p>Cell: {{profile.cell}}</p>
+    <p><a href="profile_edit/{{profile.pk}}">Edit Profile</a> </p>
+</body>
+</html>
