@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^$', index),
     (r'^profile_edit/(\d+)/$', edit_profile),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
 )

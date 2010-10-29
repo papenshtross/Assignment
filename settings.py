@@ -117,5 +117,7 @@ LOGGING = {
 }
 TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth',
                                'main.context_processors.django_settings',)
+
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
 COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(PROJECT_PATH, 'test_results')

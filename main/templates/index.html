@@ -3,18 +3,34 @@
 <head>
     <style>
         body {
-        text-align: center;
+            text-align: center;
         }
         div {
-          width:50%;
-          margin-left:auto;
-          margin-right:auto;
-          text-align:left;
+            width:50%;
+            margin-left:auto;
+            margin-right:auto;
+            text-align:left;
+        }
+        .textRight{
+            text-align:right;
+            display:inline;
+        }
+        .inline{
+            display:inline;
+            padding-right:10px;
         }
     </style>
 </head>
 <body>
-    <h1>{{profile.first_name}} {{profile.last_name}}</h1>
+    <div>
+        <p class="inline"><a href="profile_edit/{{profile.pk}}">Edit Profile</a> </p>
+        {% if user.is_authenticated %}
+             <p class="inline">Welcome, {{user.username}}</p>
+        {% else %}
+             <p class="inline"><a href="{{settings.LOGIN_URL}}?next=/">Log in</a> </p>
+        {% endif %}
+    </div>
+    <h1 class="inline">{{profile.first_name}} {{profile.last_name}}</h1>
     <p>About me:</p>
     <div>
         <p>{{profile.bio}}</p>
@@ -24,6 +40,5 @@
     <p>Skype: {{profile.skype}}</p>
     <p>ICQ: {{profile.icq}}</p>
     <p>Cell: {{profile.cell}}</p>
-    <p><a href="profile_edit/{{profile.pk}}">Edit Profile</a> </p>
 </body>
 </html>
