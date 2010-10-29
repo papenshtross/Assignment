@@ -2,7 +2,7 @@
 from django.db import models
 
 
-class Profile(models.Model):       
+class Profile(models.Model):
     """My profile model"""
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -11,5 +11,6 @@ class Profile(models.Model):
     icq = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
     cell = models.CharField(max_length=30)
+
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)

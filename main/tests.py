@@ -25,8 +25,8 @@ class MainTest(TestCase):
         profile = Profile.objects.get(pk=1)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1
-                            , status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1,
+                            status_code=200, msg_prefix='')
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
