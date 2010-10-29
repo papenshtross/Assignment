@@ -6,6 +6,7 @@ from django.template.context import RequestContext
 from main.forms import ProfileForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -15,6 +16,7 @@ def index(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def edit_profile(request, id=None):
     """Edit profile page rendering"""
     form = ProfileForm(request.POST or None,
