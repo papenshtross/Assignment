@@ -25,8 +25,7 @@ class MainTest(WebTest):
         profile = Profile.objects.get(pk=self.profile_pk)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1,
-                            status_code=200, msg_prefix='')
+        self.assertContains(response, profile.first_name, count=1, msg_prefix='')
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
@@ -49,19 +48,16 @@ class MainTest(WebTest):
 
     def test_edit_profile(self):
         """Test case for edit profile"""
-        response = self.client.get('/profile_edit/' +
-                                   str(self.profile_pk) + '/')
+        response = self.app.get('/profile_edit/' +
+                                str(self.profile_pk) + '/',
+                                extra_environ=dict(REMOTE_USER='root'))
         response_form = response.context['form']
         self.assertIsNotNone(response_form)
-        # Assign profile objects from test db
-        profile = Profile.objects.get(pk=self.profile_pk)
-        # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name, count=1,
-                            status_code=200, msg_prefix='')
 
     def test_edit_profile_webtest(self):
         """Test edit profile functionality using django_webtest"""
-        form = self.app.get('/profile_edit/' + str(self.profile_pk) + '/').form
+        form = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
+                            extra_environ=dict(REMOTE_USER='root')).form
         test_name = 'test_name'
         form['first_name'] = test_name
         #Submit form and get following response
@@ -71,3 +67,11 @@ class MainTest(WebTest):
         #Check that DB is updated
         profile = Profile.objects.get(pk=self.profile_pk)
         self.failUnlessEqual(test_name, profile.first_name)
+
+    def test_login(self):
+        """Test login functionality"""
+        response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/')
+        self.failUnlessEqual(response.status_int, 302)
+        response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
+                            extra_environ=dict(REMOTE_USER='root'))
+        self.failUnlessEqual(response.status_int, 200)
