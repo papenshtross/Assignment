@@ -7,6 +7,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     bio = models.TextField()
+    birth_date = models.DateField()
     skype = models.CharField(max_length=30)
     icq = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
