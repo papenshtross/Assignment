@@ -3,17 +3,22 @@
 <head>
     <style>
         body {
-        text-align: center;
+            text-align: center;
         }
         div {
-          width:50%;
-          margin-left:auto;
-          margin-right:auto;
-          text-align:left;
+            width:50%;
+            margin-left:auto;
+            margin-right:auto;
+            text-align:left;
+        }
+        #settings_value{
+            position:absolute;
+            text-align:left;
         }
     </style>
 </head>
 <body>
+    <p id="settings_value">settings.TIME_ZONE: {{settings.TIME_ZONE}}</p>
     <h1>{{profile.first_name}} {{profile.last_name}}</h1>
     <p>About me:</p>
     <div>
