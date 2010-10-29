@@ -1,0 +1,8 @@
+
+/.idea
+*.pyc
+/test_results
+/pep8.py
+/coverage
+/django_coverage
+*.db
