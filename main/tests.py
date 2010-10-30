@@ -6,7 +6,6 @@ Replace these with more appropriate tests for your application.
 """
 from main.models import Profile, Request
 from django_webtest import WebTest
-from django.contrib.admin.widgets import AdminDateWidget
 
 
 class MainTest(WebTest):
@@ -85,7 +84,7 @@ class MainTest(WebTest):
                                 extra_environ=dict(REMOTE_USER='root'))
         assert 'DateTimeShortcuts' in response, response
 
-    def test_profile_reverse_field_order(self):
+    def test_reverse_field_order(self):
         """Test edit profile form reverse field order"""
         response = self.app.get('/profile_edit/' +
                                 str(self.profile_pk) + '/',
