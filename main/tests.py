@@ -84,3 +84,13 @@ class MainTest(WebTest):
                                 str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
         assert 'DateTimeShortcuts' in response, response
+
+    def test_profile_reverse_field_order(self):
+        """Test edit profile form reverse field order"""
+        response = self.app.get('/profile_edit/' +
+                                str(self.profile_pk) + '/',
+                                extra_environ=dict(REMOTE_USER='root'))
+        profile_fields = Profile._meta.fields[:]
+        profile_fields.reverse()
+        form_fields = response.form.fields.keys()
+        self.assertEquals(profile_fields[-2].get_attname(), form_fields[1])
