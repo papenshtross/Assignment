@@ -6,7 +6,6 @@ Replace these with more appropriate tests for your application.
 """
 from main.models import Profile, Request
 from django_webtest import WebTest
-from django.contrib.admin.widgets import AdminDateWidget
 
 
 class MainTest(WebTest):
@@ -46,7 +45,7 @@ class MainTest(WebTest):
         """Test case for django settings context template processor"""
         response = self.client.get('')
         context_settings = response.context['settings']
-        self.assertIsNotNone(context_settings)
+        self.assertNotEqual(context_settings, None)
 
     def test_edit_profile(self):
         """Test case for edit profile"""
@@ -54,7 +53,7 @@ class MainTest(WebTest):
                                 str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
         response_form = response.context['form']
-        self.assertIsNotNone(response_form)
+        self.assertNotEqual(response_form, None)
 
     def test_edit_profile_webtest(self):
         """Test edit profile functionality using django_webtest"""
@@ -77,10 +76,3 @@ class MainTest(WebTest):
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
                             extra_environ=dict(REMOTE_USER='root'))
         self.failUnlessEqual(response.status_int, 200)
-
-    def test_birth_date_widget(self):
-        """Test to ensure that date widget is presented"""
-        response = self.app.get('/profile_edit/' +
-                                str(self.profile_pk) + '/',
-                                extra_environ=dict(REMOTE_USER='root'))
-        assert 'DateTimeShortcuts' in response, response
