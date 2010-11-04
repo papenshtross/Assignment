@@ -45,7 +45,7 @@ class MainTest(WebTest):
         """Test case for django settings context template processor"""
         response = self.client.get('')
         context_settings = response.context['settings']
-        self.assertIsNotNone(context_settings)
+        self.assertNotEqual(context_settings, None)
 
     def test_edit_profile(self):
         """Test case for edit profile"""
@@ -53,7 +53,7 @@ class MainTest(WebTest):
                                 str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
         response_form = response.context['form']
-        self.assertIsNotNone(response_form)
+        self.assertNotEqual(response_form, None)
 
     def test_edit_profile_webtest(self):
         """Test edit profile functionality using django_webtest"""
