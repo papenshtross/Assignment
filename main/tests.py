@@ -45,14 +45,14 @@ class MainTest(WebTest):
         """Test case for django settings context template processor"""
         response = self.client.get('')
         context_settings = response.context['settings']
-        self.assertIsNotNone(context_settings)
+        self.assertNotEqual(context_settings, None)
 
     def test_edit_profile(self):
         """Test case for edit profile"""
         response = self.client.get('/profile_edit/' +
                                    str(self.profile_pk) + '/')
         response_form = response.context['form']
-        self.assertIsNotNone(response_form)
+        self.assertNotEqual(response_form, None)
         # Assign profile objects from test db
         profile = Profile.objects.get(pk=self.profile_pk)
         # Check that response contains first_name filed value
