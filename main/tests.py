@@ -6,6 +6,8 @@ Replace these with more appropriate tests for your application.
 """
 from main.models import Profile, Request
 from django_webtest import WebTest
+from django.template import Template
+from django.template.context import Context
 
 
 class MainTest(WebTest):
@@ -15,18 +17,15 @@ class MainTest(WebTest):
 
     def test_index(self):
         """Test case for index page"""
-        response = self.client.get('')
+        response = self.app.get('', extra_environ=dict(REMOTE_USER='root'))
 
         # Check that the response is 200 OK
-        self.failUnlessEqual(response.status_code, 200)
-        # Check that index.html template is using
-        self.assertTemplateUsed(response, 'index.html', msg_prefix='')
+        self.failUnlessEqual(response.status_int, 200)
         # Assign profile objects from test db and acquired from response
         profile = Profile.objects.get(pk=self.profile_pk)
         response_profile = response.context['profile']
         # Check that response contains first_name filed value
-        self.assertContains(response, profile.first_name,
-                            count=1, msg_prefix='')
+        assert profile.first_name in response, response
         # Check profile fields values
         self.failUnlessEqual(profile.first_name, response_profile.first_name)
         self.failUnlessEqual(profile.last_name, response_profile.last_name)
@@ -38,12 +37,12 @@ class MainTest(WebTest):
 
     def test_request_hook_middleware(self):
         """Test case for request hook middleware"""
-        self.client.get('')
+        self.app.get('', extra_environ=dict(REMOTE_USER='root'))
         self.assertTrue(Request.objects.all().count() > 0)
 
     def test_django_template_processor(self):
         """Test case for django settings context template processor"""
-        response = self.client.get('')
+        response = self.app.get('', extra_environ=dict(REMOTE_USER='root'))
         context_settings = response.context['settings']
         self.assertNotEqual(context_settings, None)
 
@@ -93,3 +92,13 @@ class MainTest(WebTest):
         profile_fields.reverse()
         form_fields = response.form.fields.keys()
         self.assertEquals(profile_fields[-2].get_attname(), form_fields[1])
+
+    def test_edit_link_tag(self):
+        """Test case for edit_link template tag"""
+        profile = Profile.objects.get(pk=self.profile_pk)
+        template = Template('{% load edit_tags %}{% edit_link  profile %}')
+        context = Context({"profile": profile})
+        rendered = template.render(context)
+        self.assertEqual(rendered, '<a href="/admin/main/profile/' +
+                                   str(self.profile_pk) + '/">Edit ' +
+                                   str(profile) + '</a>')
