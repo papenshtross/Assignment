@@ -1,3 +1,4 @@
+{% load edit_tags %}
 <html>
 <title>My personal page</title>
 <head>
@@ -41,5 +42,6 @@
     <p>Skype: {{profile.skype}}</p>
     <p>ICQ: {{profile.icq}}</p>
     <p>Cell: {{profile.cell}}</p>
+    <p>{% edit_link user %}</p>
 </body>
 </html>
