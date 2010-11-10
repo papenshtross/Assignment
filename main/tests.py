@@ -7,6 +7,9 @@ Replace these with more appropriate tests for your application.
 from main.models import Profile, Request
 from django_webtest import WebTest
 from django.template import Template
+from django.core.management import call_command
+import sys
+from StringIO import StringIO
 from django.template.context import Context
 
 
@@ -102,3 +105,19 @@ class MainTest(WebTest):
         self.assertEqual(rendered, '<a href="/admin/main/profile/' +
                                    str(self.profile_pk) + '/">Edit ' +
                                    str(profile) + '</a>')
+
+    def test_print_models_command(self):
+        """Test case for print_models command"""
+        stdout = []
+        #Replace sys.stdout with capture buffer
+        stdout.append(sys.stdout)
+        _buf = StringIO()
+        sys.stdout = _buf
+        call_command('print_models', 'main')
+        #Captured stdout output.
+        result = _buf.getvalue()
+        assert Profile.__name__ + '\n' + 'Objects count: ' +\
+                      str(len(Profile.objects.all())) in  result, result
+        #Restore stdout
+        if stdout:
+            sys.stdout = stdout.pop()
