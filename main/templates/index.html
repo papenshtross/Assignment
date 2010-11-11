@@ -42,6 +42,8 @@
     <p>Skype: {{profile.skype}}</p>
     <p>ICQ: {{profile.icq}}</p>
     <p>Cell: {{profile.cell}}</p>
-    <p>{% edit_link user %}</p>
+    {% if user.is_authenticated %}
+        <p>{% edit_link user %}</p>
+    {% endif %}
 </body>
 </html>
