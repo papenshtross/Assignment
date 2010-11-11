@@ -6,7 +6,7 @@ Replace these with more appropriate tests for your application.
 """
 from main.models import Profile, Request
 from django_webtest import WebTest
-from django.template import Template
+from django.template import Template, TemplateSyntaxError
 from django.template.context import Context
 
 
@@ -96,7 +96,9 @@ class MainTest(WebTest):
     def test_edit_link_tag(self):
         """Test case for edit_link template tag"""
         profile = Profile.objects.get(pk=self.profile_pk)
-        template = Template('{% load edit_tags %}{% edit_link  profile %}')
+        self.assertRaises(TemplateSyntaxError,  Template,
+                         '{% load edit_tags %}{% edit_link %}')
+        template = Template('{% load edit_tags %}{% edit_link profile %}')
         context = Context({"profile": profile})
         rendered = template.render(context)
         self.assertEqual(rendered, '<a href="/admin/main/profile/' +
