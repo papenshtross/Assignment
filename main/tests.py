@@ -4,7 +4,7 @@ unittest). These will both pass when you run "manage.py test".
 
 Replace these with more appropriate tests for your application.
 """
-from main.models import Profile, Request
+from main.models import Profile, Request, TransactionSignal
 from django_webtest import WebTest
 from django.template import Template, TemplateSyntaxError
 from django.core.management import call_command
@@ -123,3 +123,26 @@ class MainTest(WebTest):
         #Restore stdout
         if stdout:
             sys.stdout = stdout.pop()
+
+    def test_signal_processor(self):
+        """Test case for signal processor"""
+        Profile.objects.create(first_name='test_name',
+                               last_name='test_last_name',
+                               birth_date='1988-09-22')
+        #Test create signal
+        create_transactions = TransactionSignal.objects.filter(
+                model=Profile.__name__, action='create')
+        assert len(create_transactions) > 0
+        #Test update signal
+        profile = Profile.objects.get(first_name='test_name',
+                               last_name='test_last_name')
+        profile.first_name = 'test'
+        profile.save()
+        update_transactions = TransactionSignal.objects.filter(
+                model=Profile.__name__, action='update')
+        assert len(update_transactions) > 0
+        #Test delete signal
+        profile.delete()
+        delete_transactions = TransactionSignal.objects.filter(
+                model=Profile.__name__, action='delete')
+        assert len(delete_transactions) > 0
