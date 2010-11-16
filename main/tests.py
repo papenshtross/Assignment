@@ -168,3 +168,10 @@ class MainTest(WebTest):
                                              'text': 'test_text', },
                                HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         assert '"bad": "true"' in response.content, response.content
+
+    def test_request_list(self):
+        """Test case for request list"""
+        response = self.app.get('/request_list/')
+        self.failUnlessEqual(response.status_int, 200)
+        request_list = response.context['object_list']
+        assert len(request_list) > 0 and len(request_list) <= 10
