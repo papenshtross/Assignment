@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Simple AJAX Form{% endblock %}
+
+{% block J %}{{ form.media }}{% endblock %}
+
+{% block css %}forms.css{% endblock %}
+
+
+{% block jquery %}
+
+    // prepare the form when the DOM is ready
+    $(document).ready(function() {
+    // prepare Options Object
+    var options = {
+    dataType:  'json',
+    success:   processJson, //What to call after a reply from Django
+    beforeSubmit: beforeForm
+    };
+    // bind form using ajaxForm
+    $('#tf').ajaxForm(options); //My form id is 'tf'
+    });
+
+    function beforeForm() {
+    //$('#bt').attr("disabled","disabled"); //Disable the submit button - can't click twice
+    toogleFormStatus(true);
+    $('.errorlist').remove(); //Get rid of any old error uls
+    $('#emsg').fadeOut('slow'); //Get rid of the main error message
+    return true; //Might not need this...
+    }
+
+    function toogleFormStatus(flag){
+    var limit = document.forms[0].elements.length;
+    for (i=0;i
+    <limit;i++) {
+    document.forms[0].elements[i].disabled = flag;
+    }
+    }
+
+    //Do stuff with server reply:
+    function processJson(data) {
+    // This is the first time I have touched jQuery, so I'm not sure about my
+    // approach. It does work, but perhaps not in the best way.
+    //Do we have any data at all?
+    if (data) {
+    // Build a var. NOTE: Make sure your id name (this is a div) is NOT THE SAME
+    // as any var in javascript -- ie has a fit and barfs errors.
+    e_msg = "We received your form, thank you.";
+    // Did we set the 'bad' flag in Django?
+    // Use eval() to turn the stuff in the data object into actual vars.
+    if (eval(data.bad)) {
+    e_msg = "Please check your form.";
+    errors = eval(data.errs); //Again with the eval :)
+    // This is very nice: Go thru the errors, build an id name and
+    // then access that tag and add the HTML from the Django error
+    $.each(errors,function(fieldname,errmsg)
+    {
+    id = "#id_" + fieldname;
+    $(id).parent().before( errmsg ); //I want the error above the <p> holding the field
+    });
+    // re-enable the submit button, coz user has to fix stuff.
+    $('#bt').attr("disabled","");
+    }
+    //Show the message
+    $('#emsg').text( e_msg ).fadeIn("slow");
+    } else {
+    //DON'T PANIC :D
+    $('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+    }
+    toogleFormStatus(false);
+    }
+{% endblock %}
+
+{% block content_title %}
+    Simple AJAX Form
+{% endblock %}
+{% block content %}
+
+    <div id="emsg">&nbsp;</div>
+
+    <form action="{% url contactform None %}" method="post" id="tf">
+        {% csrf_token %}
+        <fieldset>
+            {{ form.as_p }}
+            <input class="input" type="submit" value="Submit" id="bt"/>
+        </fieldset>
+    </form>
+
+{% endblock %}
