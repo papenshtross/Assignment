@@ -2,9 +2,11 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from main.views import index, contactForm
 from main.views import edit_profile
+from django.views.generic import ListView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
+from main.models import Request
 
 admin.autodiscover()
 
@@ -28,4 +30,7 @@ urlpatterns = patterns('',
     #view that this is an ajax POST. I can't recall what it stood for :)
     url(r'contact/(?P<xhr>.*)$', contactForm,
         name='contactform'),
+    (r'^request_list/$', ListView.as_view(
+            queryset = Request.objects.all()[:10],
+            template_name='request_list.html')),
 )

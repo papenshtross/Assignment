@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Request List{% endblock %}
+{% block css %}
+    li {
+        list-style-type: decimal
+    }
+{% endblock %}
+{% block content_title %}First 10 Requests{% endblock %}
+{% block content %}
+    <ul>
+        {% for request in object_list %}
+            <li>{{ request }}</li>
+            </br>
+        {% endfor %}
+    </ul>
+{% endblock %}
