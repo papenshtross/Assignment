@@ -175,3 +175,12 @@ class MainTest(WebTest):
         self.failUnlessEqual(response.status_int, 200)
         request_list = response.context['object_list']
         assert len(request_list) > 0 and len(request_list) <= 10
+
+    def test_request_priority(self):
+        """Unit test for request priority"""
+        self.app.get('/request_list/')
+        Request.objects.create(request='test_p_1', priority=1)
+        Request.objects.create(request='test_p_2', priority=2)
+        response = self.app.get('/request_list/')
+        request_list = response.context['object_list']
+        assert request_list[0].priority == 2, request_list[0].priority
