@@ -23,9 +23,11 @@ class Profile(models.Model):
 class Request(models.Model):
     """Http Request model"""
     request = models.TextField()
+    priority = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.request
+        return 'Priority: ' + str(self.priority) + \
+               ' ' + self.request
 
 
 class TransactionSignal(models.Model):

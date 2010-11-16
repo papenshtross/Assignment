@@ -7,6 +7,7 @@ from django.views.generic import ListView
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 from main.models import Request
+from operator import attrgetter
 
 admin.autodiscover()
 
@@ -31,6 +32,6 @@ urlpatterns = patterns('',
     url(r'contact/(?P<xhr>.*)$', contactForm,
         name='contactform'),
     (r'^request_list/$', ListView.as_view(
-            queryset = Request.objects.all()[:10],
+            queryset = Request.objects.all().order_by('-priority')[:10] ,
             template_name='request_list.html')),
 )
