@@ -11,6 +11,7 @@ from django.core.management import call_command
 import sys
 from StringIO import StringIO
 from django.template.context import Context
+from django.test.client import Client
 
 
 class MainTest(WebTest):
@@ -76,7 +77,7 @@ class MainTest(WebTest):
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/')
         self.failUnlessEqual(response.status_int, 302)
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
-                            extra_environ=dict(REMOTE_USER='root'))
+                                extra_environ=dict(REMOTE_USER='root'))
         self.failUnlessEqual(response.status_int, 200)
 
     def test_birth_date_widget(self):
@@ -99,8 +100,8 @@ class MainTest(WebTest):
     def test_edit_link_tag(self):
         """Test case for edit_link template tag"""
         profile = Profile.objects.get(pk=self.profile_pk)
-        self.assertRaises(TemplateSyntaxError,  Template,
-                         '{% load edit_tags %}{% edit_link %}')
+        self.assertRaises(TemplateSyntaxError, Template,
+                          '{% load edit_tags %}{% edit_link %}')
         template = Template('{% load edit_tags %}{% edit_link profile %}')
         context = Context({"profile": profile})
         rendered = template.render(context)
@@ -119,7 +120,7 @@ class MainTest(WebTest):
         #Captured stdout output.
         result = _buf.getvalue()
         assert Profile.__name__ + '\n' + 'Objects count: ' +\
-                      str(len(Profile.objects.all())) in  result, result
+               str(len(Profile.objects.all())) in  result, result
         #Restore stdout
         if stdout:
             sys.stdout = stdout.pop()
@@ -135,7 +136,7 @@ class MainTest(WebTest):
         assert len(create_transactions) > 0
         #Test update signal
         profile = Profile.objects.get(first_name='test_name',
-                               last_name='test_last_name')
+                                      last_name='test_last_name')
         profile.first_name = 'test'
         profile.save()
         update_transactions = TransactionSignal.objects.filter(
@@ -146,3 +147,24 @@ class MainTest(WebTest):
         delete_transactions = TransactionSignal.objects.filter(
                 model=Profile.__name__, action='delete')
         assert len(delete_transactions) > 0
+
+    def test_ajax_form(self):
+        """Test case for ajax form view"""
+        form = self.app.get('/contact/').form
+        form['subject'] = "test_subject"
+        form['text'] = "test_text"
+        #Submit form and get following response
+        response = form.submit()
+        #Not ajax
+        self.failUnlessEqual(response.status_int, 302)
+        client = Client()
+        #Form is valid
+        response = client.post('/contact/', {'subject': 'test_subject',
+                                             'text': 'test_text', },
+                               HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        assert '"bad": "false"' in response.content, response.content
+        #Form isn't valid
+        response = client.post('/contact/', {'subject': '',
+                                             'text': 'test_text', },
+                               HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        assert '"bad": "true"' in response.content, response.content
