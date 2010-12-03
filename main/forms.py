@@ -1,7 +1,7 @@
 """File where form defenitions are situated"""
 from django import forms
 from main.models import Profile
-from django.contrib.admin.widgets import AdminDateWidget
+from main.widgets import DateTimeWidget
 
 
 class ProfileForm(forms.ModelForm):
@@ -9,4 +9,4 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Model assigning"""
         model = Profile
-        widgets = {'birth_date': AdminDateWidget()}
+        widgets = {'birth_date': DateTimeWidget}

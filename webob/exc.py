@@ -525,7 +525,7 @@ class HTTPUnsupportedMediaType(HTTPClientError):
     title = 'Unsupported Media Type'
     # override template since we need an environment variable
     template_obj = Template('''\
-The request media type ${CONTENT_TYPE} is not supported by this server.
+The request site_media type ${CONTENT_TYPE} is not supported by this server.
 <br /><br />
 ${detail}''')
 

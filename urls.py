@@ -5,6 +5,7 @@ from main.views import edit_profile
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
+import settings
 
 admin.autodiscover()
 
@@ -20,4 +21,6 @@ urlpatterns = patterns('',
     (r'^$', index),
     (r'^profile_edit/(\d+)/$', edit_profile),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
 )

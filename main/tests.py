@@ -80,3 +80,10 @@ class MainTest(WebTest):
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
         self.failUnlessEqual(response.status_int, 200)
+
+    def test_birth_date_widget(self):
+        """Test to ensure that date widget is presented"""
+        response = self.app.get('/profile_edit/' +
+                                str(self.profile_pk) + '/',
+                                extra_environ=dict(REMOTE_USER='root'))
+        assert 'calendar' in response, response
