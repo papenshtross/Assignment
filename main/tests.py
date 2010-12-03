@@ -76,6 +76,10 @@ class MainTest(WebTest):
         """Test login functionality"""
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/')
         self.failUnlessEqual(response.status_int, 302)
+        form = response.follow().form
+        self.assertNotEqual(form, None)
+        self.assertNotEqual(form['username'], None)
+        self.assertNotEqual(form['password'], None)
         response = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
         self.failUnlessEqual(response.status_int, 200)
