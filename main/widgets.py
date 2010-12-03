@@ -1,5 +1,6 @@
 """Contains widgets"""
 from django.utils.encoding import force_unicode
+from django.utils.formats import get_format
 from django.conf import settings
 from django import forms
 from django.utils.safestring import mark_safe
@@ -7,9 +8,6 @@ import datetime
 import time
 
 # DATETIMEWIDGET
-import django
-
-
 calbtn = u"""<img src="%s/site_media/jscalendar/img.gif"
 alt="calendar" id="%s_btn" style="cursor: pointer; border:
 1px solid #8888aa;" title="Select date and time"
@@ -51,7 +49,7 @@ class DateTimeWidget(forms.widgets.TextInput):
         return mark_safe(a)
 
     def value_from_datadict(self, data, files, name):
-        dtf = django.utils.formats.get_format('DATETIME_INPUT_FORMATS')
+        dtf = get_format('DATETIME_INPUT_FORMATS')
         empty_values = forms.fields.EMPTY_VALUES
 
         value = data.get(name, None)
