@@ -4,13 +4,14 @@ unittest). These will both pass when you run "manage.py test".
 
 Replace these with more appropriate tests for your application.
 """
-from main.models import Profile, Request, TransactionSignal
+import sys
+from StringIO import StringIO
 from django_webtest import WebTest
 from django.template import Template, TemplateSyntaxError
 from django.core.management import call_command
-import sys
-from StringIO import StringIO
 from django.template.context import Context
+from main.models import Profile, Request, TransactionSignal
+from main.forms import ProfileForm
 
 
 class MainTest(WebTest):
@@ -88,13 +89,11 @@ class MainTest(WebTest):
 
     def test_reverse_field_order(self):
         """Test edit profile form reverse field order"""
-        response = self.app.get('/profile_edit/' +
-                                str(self.profile_pk) + '/',
-                                extra_environ=dict(REMOTE_USER='root'))
         profile_fields = Profile._meta.fields[:]
         profile_fields.reverse()
-        form_fields = response.form.fields.keys()
-        self.assertEquals(profile_fields[-2].get_attname(), form_fields[1])
+        form_fields = ProfileForm().fields.keys()
+        for p, f in zip(profile_fields, form_fields):
+            self.assertEquals(p.get_attname(), f)
 
     def test_edit_link_tag(self):
         """Test case for edit_link template tag"""
