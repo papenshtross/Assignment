@@ -1,14 +1,14 @@
 """File where views are defined"""
-from main.models import Profile
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template.context import RequestContext
-from main.forms import ProfileForm, ContactForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import simplejson
+from main.forms import ProfileForm, ContactForm
+from main.models import Profile
 
 
 def index(request):
