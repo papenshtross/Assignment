@@ -1,6 +1,5 @@
 """Defining application models"""
 from django.db import models
-from django.dispatch.dispatcher import receiver
 from django.db.models.signals import post_save
 from django.db.models.signals import post_delete
 
@@ -39,7 +38,6 @@ class TransactionSignal(models.Model):
         return u'%s %s' % (self.model, self.action)
 
 
-@receiver(post_save)
 def saved(sender, created, **kwargs):
     """post_save signal handler"""
     if sender is not TransactionSignal:
@@ -49,10 +47,11 @@ def saved(sender, created, **kwargs):
             action = 'update'
         TransactionSignal.objects.create(model=sender.__name__,
                                          action=action)
+post_save.connect(saved)
 
 
-@receiver(post_delete)
 def deleted(sender, **kwargs):
     """post_delete signal handler"""
     TransactionSignal.objects.create(model=sender.__name__,
                                          action='delete')
+post_delete.connect(deleted)
