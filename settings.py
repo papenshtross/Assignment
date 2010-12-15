@@ -44,18 +44,20 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# Absolute path to the directory that holds site_media.
+# Example: "/home/site_media/site_media.lawrence.com/"
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'site_media')
+
+# URL that handles the site_media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
+# Examples: "http://site_media.lawrence.com", "http://example.com/site_media/"
 MEDIA_URL = ''
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
+# URL prefix for admin site_media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
+# Examples: "http://foo.com/site_media/", "/site_media/".
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
@@ -117,7 +119,5 @@ LOGGING = {
 }
 TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth',
                                'main.context_processors.django_settings',)
-
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(PROJECT_PATH, 'test_results')

@@ -1,20 +1,56 @@
-{% load adminmedia %}
 <html>
 <head>
     <title>Edit Profile</title>
-    <link rel="stylesheet" type="text/css" href="/media/admin/css/forms.css"/>
-    <link rel="stylesheet" type="text/css" href="/media/admin/css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="/media/admin/css/global.css"/>
-    <link rel="stylesheet" type="text/css" href="/media/admin/css/widgets.css"/>
-
-    <script type="text/javascript" src="/admin/jsi18n/"></script>
-    <script type="text/javascript" src="/media/admin/js/core.js"></script>
-    <script type="text/javascript" src="/media/admin/js/admin/RelatedObjectLookups.js"></script>
     {{ form.media }}
+    <style>
+        .hide { position:absolute; visibility:hidden; }
+        .show { position:absolute; visibility:visible; }
+    </style>
     <script type="text/javascript">
-        window.__admin_media_prefix__ = "{% filter escapejs %}{% admin_media_prefix %}{% endfilter %}";
+        
+        $(document).ready(function() {
+            var options = {
+                dataType:  'json',
+                success:   onSuccess,
+                beforeSubmit: beforeForm                
+            };
+            $('#edit_form').ajaxForm(options);
+        });
+
+        function beforeForm() {           
+            $(':input', $('#edit_form')).attr('disabled', true);
+            $('.errorlist').remove();
+            $('#emsg').fadeOut('slow');
+            CallJS('Start()');
+        }
+
+        function onSuccess(jsonData) {
+            if (jsonData) {
+                e_msg = "We received your form, thank you.";
+                errors = eval(jsonData.errs);
+                url = '/';
+                if (errors) {
+                    e_msg = "Please check your form.";
+                    url = '';
+                    $.each(errors,
+                        function(fieldname,errmsg){
+                            id = "#id_" + fieldname;
+                            $(id).parent().after(errmsg);
+                        }
+                    );
+                }
+                $('#emsg').text(e_msg).fadeIn("slow");               
+                setTimeout('window.location.href = url', 1000);                
+            } else {
+                $('#emsg').text("Ajax error : no data received. ").fadeIn("slow");
+            }
+            $(':input', $('#edit_form')).removeAttr('disabled');
+            CallJS('Terminate()');
+        }
     </script>
+
 </head>
+
 <body>
     <h1>Edit Profile</h1>
 
@@ -23,8 +59,12 @@
             Please correct the error{{ form.errors|pluralize }} below.
         </p>
     {% endif %}
-
-    <form action="" method="post">
+    
+    <div id="emsg"></div>
+    
+    <div>&nbsp;</div>
+    
+    <form method="post" id="edit_form">
         {% csrf_token %}
         <table>
             {{ form.as_table }}
