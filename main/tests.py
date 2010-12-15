@@ -180,4 +180,4 @@ class MainTest(WebTest):
                                      'birth_date': 'wrong date', },
                                HTTP_X_REQUESTED_WITH='XMLHttpRequest',
                                REMOTE_USER='root')
-        assert '"bad": "true"' in response.content, response.contentn
+        assert '"bad": "true"' in response.content, response.content
