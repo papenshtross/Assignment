@@ -109,7 +109,8 @@ def request_view(request):
             for form in formset.forms:
                 form.save()
     else:
-        formset = request_form_set(queryset=Request.objects.filter(pk__in=keys))
+        formset = request_form_set(queryset=Request.objects.filter(
+                                                        pk__in=keys))
 
     paginator = Paginator(range(len(Request.objects.all())), 10)
     try:
