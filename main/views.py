@@ -11,8 +11,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import simplejson
-from main.forms import ProfileForm
 from main.models import Profile, Request
+from main.forms import ProfileForm
 
 
 def index(request):

@@ -6,8 +6,8 @@ Replace these with more appropriate tests for your application.
 """
 import sys
 from StringIO import StringIO
-from django.template import Template, TemplateSyntaxError
 from django.core.management import call_command
+from django.template import Template, TemplateSyntaxError
 from django.template.context import Context
 from django_webtest import WebTest
 from main.models import Profile, Request, TransactionSignal
@@ -102,8 +102,8 @@ class MainTest(WebTest):
     def test_edit_link_tag(self):
         """Test case for edit_link template tag"""
         profile = Profile.objects.get(pk=self.profile_pk)
-        self.assertRaises(TemplateSyntaxError, Template,
-                          '{% load edit_tags %}{% edit_link %}')
+        self.assertRaises(TemplateSyntaxError,  Template,
+                         '{% load edit_tags %}{% edit_link %}')
         template = Template('{% load edit_tags %}{% edit_link profile %}')
         context = Context({"profile": profile})
         rendered = template.render(context)
