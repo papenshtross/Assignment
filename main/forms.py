@@ -1,6 +1,6 @@
 """File where form defenitions are situated"""
 from django import forms
-from main.models import Profile
+from main.models import Profile, Request
 from django.contrib.admin.widgets import AdminDateWidget
 
 

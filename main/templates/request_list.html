@@ -1,16 +1,76 @@
 {% extends "base.html" %}
 {% block title %}Request List{% endblock %}
+{% block J %}
+    <script type="text/javascript" src="/site_media/js/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="/site_media/js/jquery.tablesorter.js"></script>
+    <link rel=stylesheet href="/site_media/css/style.css" type="text/css" media="screen" />
+{% endblock %}
+{% block jquery %}
+    $(document).ready(function()
+        {
+            $("#requestTable").tablesorter({widthFixed: true});
+        }
+    );
+{% endblock %}
 {% block css %}
     li {
         list-style-type: decimal
     }
+    #id_request {
+        width: 300px;
+        height: 200px;
+    }
 {% endblock %}
-{% block content_title %}First 10 Requests{% endblock %}
+{% block content_title %}Request List{% endblock %}
 {% block content %}
-    <ul>
-        {% for request in object_list %}
-            <li>{{ request }}</li>
-            </br>
-        {% endfor %}
-    </ul>
+    <form method="post" action="">
+        <br/>
+        {% if formset.errors %}
+            {% for form in formset.forms %}
+                {% for field in form %}
+                    {% if field.errors %}<li style="color: red;">{{ field.errors|striptags }}</li>{% endif %}
+                {% endfor %}
+            {% endfor %}          
+        {% endif %}
+        <br/>
+        <input type="submit" value="Save">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table style="width:0;" id="requestTable" class="tablesorter">
+            <thead>
+                <tr>
+                    <th>Request</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for form in formset.forms %}
+                <tr>
+                    {{ form.id }}
+                    <td>{{ form.request }}</td>
+                    <td>{{ form.priority }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br/>
+        <div class="pagination">
+            <span class="step-links">
+                {% if requests.has_previous %}
+                    <a href="?page={{ requests.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ requests.number }} of {{ requests.paginator.num_pages }}.
+                </span>
+
+                {% if requests.has_next %}
+                    <a href="?page={{ requests.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        <br/>
+        <input type="submit" value="Save">        
+    </form>
+
 {% endblock %}

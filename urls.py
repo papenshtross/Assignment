@@ -2,17 +2,13 @@
 # from django.contrib import admin
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from django.views.generic import list_detail
 from main.views import index, contactForm
 from main.views import edit_profile
-from main.models import Request
+from main.views import request_view
+
+import settings
 
 admin.autodiscover()
-
-request_list_info = {
-    "queryset" : Request.objects.all().order_by('-priority')[:10],
-    "template_name" :'request_list.html',
-}
 
 urlpatterns = patterns('',
     # Example:
@@ -34,5 +30,6 @@ urlpatterns = patterns('',
     #view that this is an ajax POST. I can't recall what it stood for :)
     url(r'contact/(?P<xhr>.*)$', contactForm,
         name='contactform'),
-    (r'^request_list/$',list_detail.object_list, request_list_info),
-)
+    (r'^request_list/$', request_view),
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),)
