@@ -1,18 +1,19 @@
 """File where views are defined"""
 import time
-from django.shortcuts import render_to_response
-from django.shortcuts import get_object_or_404
-from django.template.context import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.utils import simplejson
 from django.forms.models import modelformset_factory
 from django.forms.widgets import Textarea
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
+from django.template.context import RequestContext
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 from main.models import Request
 from main.models import Profile
 from main.forms import ProfileForm
-from django.core.urlresolvers import reverse
 
 
 def index(request):
