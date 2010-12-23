@@ -1,7 +1,7 @@
 """File where form defenitions are situated"""
 from django import forms
-from main.models import Profile, Request
-from django.contrib.admin.widgets import AdminDateWidget
+from main.models import Profile
+from main.widgets import DateTimeWidget
 
 
 class ProfileForm(forms.ModelForm):
@@ -19,17 +19,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Model assigning"""
         model = Profile
-        widgets = {'birth_date': AdminDateWidget()}
-
-
-    # This describes "form" - on the server side.
-
-class ContactForm(forms.Form):
-    """Simple contact form"""
-    subject = forms.CharField(label="Subject", max_length=80)
-    text = forms.CharField(label="Your query", widget=forms.Textarea)
+        widgets = {'birth_date': DateTimeWidget}
 
     class Media:
         """Plug in the javascript we will need:"""
-        js = ("http://code.jquery.com/jquery-1.4.4.js",
-              "https://github.com/malsup/form/raw/master/jquery.form.js")
+        js = ("/site_media/js/jquery-1.4.4.js",
+                "/site_media/js/jquery.form.js",
+                "/site_media/js/progress.js",
+                "/site_media/js/progress.dialog.js")

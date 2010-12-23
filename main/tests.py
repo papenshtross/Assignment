@@ -9,10 +9,9 @@ from StringIO import StringIO
 from django.template import Template, TemplateSyntaxError
 from django.core.management import call_command
 from django.template.context import Context
-from django.test.client import Client
 from django_webtest import WebTest
-from main.models import Profile, Request, TransactionSignal
 from main.forms import ProfileForm
+from main.models import Profile, Request, TransactionSignal
 
 
 class MainTest(WebTest):
@@ -90,7 +89,7 @@ class MainTest(WebTest):
         response = self.app.get('/profile_edit/' +
                                 str(self.profile_pk) + '/',
                                 extra_environ=dict(REMOTE_USER='root'))
-        assert 'DateTimeShortcuts' in response, response
+        assert 'calendar' in response, response
 
     def test_reverse_field_order(self):
         """Test edit profile form reverse field order"""
@@ -153,23 +152,34 @@ class MainTest(WebTest):
 
     def test_ajax_form(self):
         """Test case for ajax form view"""
-        form = self.app.get('/contact/').form
-        form['subject'] = "test_subject"
-        form['text'] = "test_text"
-        #Submit form and get following response
+        form = self.app.get('/profile_edit/' + str(self.profile_pk) + '/',
+                            extra_environ=dict(REMOTE_USER='root')).form
+        test_name = 'test_name'
+        form['first_name'] = test_name
         response = form.submit()
         #Not ajax
         self.failUnlessEqual(response.status_int, 302)
-        client = Client()
         #Form is valid
-        response = client.post('/contact/', {'subject': 'test_subject',
-                                             'text': 'test_text', },
-                               HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.post('/profile_edit/' +
+                                    str(self.profile_pk) + '/',
+                                    {'first_name': 'test_name',
+                                     'last_name': "test_last_name",
+                                     'birth_date': '1988-09-22',
+                                     'skype': "test_skype",
+                                     'icq': "360433962",
+                                     'email': "romanshp@gmail.com",
+                                     'bio': 'test_bio',
+                                     'cell': "+46736375633"},
+                               HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                               REMOTE_USER='root')
         assert '"bad": "false"' in response.content, response.content
         #Form isn't valid
-        response = client.post('/contact/', {'subject': '',
-                                             'text': 'test_text', },
-                               HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.post('/profile_edit/'
+                                    + str(self.profile_pk) + '/',
+                                    {'first_name': 'test_name',
+                                     'birth_date': 'wrong date', },
+                               HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+                               REMOTE_USER='root')
         assert '"bad": "true"' in response.content, response.content
 
     def test_request_list(self):
