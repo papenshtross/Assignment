@@ -9,11 +9,10 @@ from django.template.context import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from main.models import Request
 from django.http import HttpResponse
 from django.utils import simplejson
-from main.models import Profile
 from main.forms import ProfileForm
+from main.models import Profile, Request
 
 
 def index(request):
