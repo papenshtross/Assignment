@@ -23,28 +23,28 @@
     </style>
 </head>
 <body>
-    <div>
-        <p class="inline"><a href="profile_edit/{{profile.pk}}">Edit Profile</a></p>
-        {% if user.is_authenticated %}
-            <p class="inline">Welcome, {{ user.username }}</p>
-        {% else %}
-            <p class="inline"><a href="{{settings.LOGIN_URL}}?next=/">Log in</a></p>
-        {% endif %}
-        <p class="inline"><a href="request_list/">Request List</a></p>
-    </div>
-    <h1 class="inline">{{ profile.first_name }} {{ profile.last_name }}</h1>
-    <p>About me:</p>
-    <div>
-        <p>Date of Birth: {{ profile.birth_date }}</p>
-        <p>{{ profile.bio }}</p>
-    </div>
-    <p>Contacts:</p>
-    <p>E-mail: <a href="mailto:{{profile.email}}">{{ profile.email }}</a></p>
-    <p>Skype: {{ profile.skype }}</p>
-    <p>ICQ: {{ profile.icq }}</p>
-    <p>Cell: {{ profile.cell }}</p>
+<div>
+    <p class="inline"><a href="profile_edit/{{profile.pk}}">Edit Profile</a></p>
     {% if user.is_authenticated %}
-        <p>{% edit_link user %}</p>
+        <p class="inline">Welcome, {{ user.username }}</p>
+    {% else %}
+        <p class="inline"><a href="{{settings.LOGIN_URL}}?next=/">Log in</a></p>
     {% endif %}
+    <p class="inline"><a href="request_list/">Request List</a></p>
+</div>
+<h1 class="inline">{{ profile.first_name }} {{ profile.last_name }}</h1>
+<p>About me:</p>
+<div>
+    <p>Date of Birth: {{ profile.birth_date }}</p>
+    <p>{{ profile.bio }}</p>
+</div>
+<p>Contacts:</p>
+<p>E-mail: <a href="mailto:{{profile.email}}">{{ profile.email }}</a></p>
+<p>Skype: {{ profile.skype }}</p>
+<p>ICQ: {{ profile.icq }}</p>
+<p>Cell: {{ profile.cell }}</p>
+{% if user.is_authenticated %}
+    <p>{% edit_link user %}</p>
+{% endif %}
 </body>
 </html>
