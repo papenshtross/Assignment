@@ -4,3 +4,5 @@
 /pep8.py
 /coverage
 /django_coverage
+
+*.db
