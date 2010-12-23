@@ -4,11 +4,17 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from main.views import index
 from main.views import edit_profile
+from main.models import Request
 from main.views import request_view
 import settings
 
 
 admin.autodiscover()
+
+request_list_info = {
+    "queryset" : Request.objects.all()[:10],
+    "template_name" :'request_list.html',
+}
 
 urlpatterns = patterns('',
     # Example:

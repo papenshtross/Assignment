@@ -1,7 +1,5 @@
 """File where views are defined"""
 import time
-from django.http import HttpResponse
-from django.utils import simplejson
 from django.forms.models import modelformset_factory
 from django.forms.widgets import Textarea
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -12,6 +10,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from main.models import Request
+from django.http import HttpResponse
+from django.utils import simplejson
 from main.models import Profile
 from main.forms import ProfileForm
 

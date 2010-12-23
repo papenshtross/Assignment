@@ -6,10 +6,10 @@ Replace these with more appropriate tests for your application.
 """
 import sys
 from StringIO import StringIO
-from django_webtest import WebTest
 from django.template import Template, TemplateSyntaxError
 from django.core.management import call_command
 from django.template.context import Context
+from django_webtest import WebTest
 from main.models import Profile, Request, TransactionSignal
 from main.forms import ProfileForm
 
