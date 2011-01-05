@@ -1,7 +1,7 @@
 """File where form defenitions are situated"""
 from django import forms
 from main.models import Profile
-from main.widgets import DateTimeWidget
+from main.widgets import DatePickerWidget
 
 
 class ProfileForm(forms.ModelForm):
@@ -19,7 +19,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Model assigning"""
         model = Profile
-        widgets = {'birth_date': DateTimeWidget}
+        widgets = {'birth_date': DatePickerWidget}
 
     class Media:
         """Plug in the javascript we will need:"""
