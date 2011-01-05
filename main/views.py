@@ -41,7 +41,6 @@ def edit_profile(request, id=None):
                     d.update({e[0]: unicode(e[1])})
                 rdict.update({'errs': d})
             json = simplejson.dumps(rdict, ensure_ascii=False)
-            time.sleep(1)
             return HttpResponse(json, mimetype='application/javascript')
         else:
             return HttpResponseRedirect(reverse('main.views.index'))
