@@ -1,6 +1,5 @@
 """Print models command module"""
-from main import models
-import inspect
+from django.db.models import get_models
 from django.core.management.base import BaseCommand
 
 
@@ -9,7 +8,6 @@ class Command(BaseCommand):
      the count of objects in every model"""
     def handle(self, *args, **options):
         print 'Models:'
-        for name, obj in inspect.getmembers(models):
-            if inspect.isclass(obj):
-                print obj.__name__ + '\n' + 'Objects count: ' +\
-                      str(len(obj.objects.all()))
+        for model in get_models():
+            print model.__name__ + '\n' + 'Objects count: ' +\
+                  str(len(model.objects.all()))
